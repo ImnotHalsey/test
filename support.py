@@ -4,12 +4,18 @@ import string
 import pandas as pd
 
 
-def files_processor(downloaded_file,option, code= None):
-    pdf_directory = os.path.join("Documents", "bot", "test", "pdf")
+def files_processor(downloaded_file, option, code=None):
+    pdf_directory = os.path.join(os.path.expanduser("~"), "Documents", "bot", "test", "pdf")
+    print(f"Target directory: {pdf_directory}")
     os.makedirs(pdf_directory, exist_ok=True)
     pdf_path = os.path.join(pdf_directory, f"{BankStatementProcessor.generate_random_name()}file.pdf")
-    with open(pdf_path, 'wb') as f:
-        f.write(downloaded_file)
+    print(f"Attempting to save file to: {pdf_path}")
+
+    try:
+        with open(pdf_path, 'wb') as f:
+            f.write(downloaded_file)
+    except Exception as e:
+        print(f"Error writing to file: {e}")
         
     if option == "IDFC":  # IDFC
         dfs = []
