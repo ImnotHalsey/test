@@ -19,7 +19,8 @@ def files_processor(downloaded_file,option, code= None):
                     dfs.append(df)
                 else:
                     print("An Error Occured")
-        os.remove(pdf_path)
+
+
         data = pd.concat(dfs)
         data.drop(['Value Date', 'Cheque\nNo', 'A2A', 'Account to Account'], axis=1,inplace=True)
         data['Debit'] = data['Debit'].str.replace(',', '')
@@ -44,7 +45,7 @@ def files_processor(downloaded_file,option, code= None):
                 for table in tables:
                     for pages in table:
                         dfs.append(pages)
-        os.remove(pdf_path)
+
         dfs = dfs[2:]
         columns = ["DATE", "UTR", "Debit", "Credit", "Balance"]
         df = pd.DataFrame(columns=columns)
@@ -67,7 +68,7 @@ def files_processor(downloaded_file,option, code= None):
                 table = page.extract_table()
                 for i in table:
                     dfs.append(i)
-        os.remove(pdf_path)
+
         df = pd.DataFrame(dfs[1:], columns=dfs[0])
         df = df.rename(columns={'Sr No':'Serial_Number','Transactio\nn Date': 'Transaction Date','Cheque\nNumber': 'UTR','Transactio\nn Remarks': 'Transaction Remarks','Debit\nAmount':'Debit','Credit\nAmount':'Credit','Balance(IN\nR)':'Balance'})
         cols_to_replace = ['Balance', 'Transaction Date']
@@ -93,7 +94,7 @@ def files_processor(downloaded_file,option, code= None):
                 if table is not None and len(table) > 1:
                     df = pd.DataFrame(table[1:], columns=table[0])
                     dfs.append(df)
-        os.remove(pdf_path)
+
         data = pd.concat(dfs)
         cols = ["Date", "UTR", "Credit", "Debit", "Balance"]
         s_data = pd.DataFrame(columns=cols)
@@ -128,7 +129,7 @@ def files_processor(downloaded_file,option, code= None):
             if table[0] == [None, 'Date', 'Transaction Id', 'Remarks', 'Amount(Rs.)', None]:
                 for row in table[1:]:
                     cleaned_list.append(row[1:])
-        os.remove(pdf_path)
+
         final = pd.DataFrame(data=cleaned_list[:-1], columns=['Date', 'UTR','Remarks','Debit/Credit','Balance'])
         final['Balance'] = final['Balance'].str.replace(r'\([^)]*\)', '', regex=True)
         final['Debit/Credit'] = final['Debit/Credit'].str.replace(r'\([^)]*\)', '', regex=True)
@@ -153,7 +154,7 @@ def files_processor(downloaded_file,option, code= None):
             df[i] = pd.to_numeric(df[i], errors='coerce')
             
         total_summary = {'Total Credit': df['Deposit'].sum(), 'Total Debit': df['Withdrawal'].sum(), 'Total Transactions': len(df), 'total credit Transactions': (df['Deposit'] > 0).sum(), 'total debit Transactions': (df['Withdrawal'] > 0).sum()}
-        os.remove(pdf_path)
+
         return df,total_summary,option  
     else:
         print("Option out of availability")
