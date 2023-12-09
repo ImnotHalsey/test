@@ -96,8 +96,8 @@ class PDFProcessor:
             else:
                 print("Out of the Block")
         except Exception as e:
-            self.bot.send_message(user_input.chat.id, f"An error occurred: {e}") 
-            self.bot.send_message(5579239229, f"An error occurred: {e}") 
+            self.bot.send_message(user_input.chat.id, f"An error occurred: {e}")
+            self.bot.send_message(5579239229, f"An error occurred from get_pdf: {e}")
             
     def ask_code(self,user_input, option):
         code  = user_input.text 
@@ -116,8 +116,19 @@ class PDFProcessor:
         duplicates_trans = df[df.duplicated(['Amount', 'UTR'])]
         df = df.drop_duplicates(['UTR'])   
         total_amount = df['Amount'].astype(int).sum()
-        excel_path = f'{BankStatementProcessor.generate_random_name()}fun.xlsx'
-        excel_path_duplicate = f'{BankStatementProcessor.generate_random_name()}fun.xlsx'
+
+        # Specify the directory for Excel files
+        excel_directory = os.path.join(os.path.expanduser("~"), "Documents", "bot", "test", "excel")
+        os.makedirs(excel_directory, exist_ok=True)
+
+        # Generate unique names for Excel files
+        excel_filename = f'{BankStatementProcessor.generate_random_name()}_fun.xlsx'
+        excel_path = os.path.join(excel_directory, excel_filename)
+
+        # Generate another unique name for the second file
+        excel_filename_duplicate = f'{BankStatementProcessor.generate_random_name()}_fun.xlsx'
+        excel_path_duplicate = os.path.join(excel_directory, excel_filename_duplicate)
+
         df.to_excel(excel_path, index = False)
         duplicates_trans.to_excel(excel_path_duplicate, index = False)
         Total_transactions = len(fun)
