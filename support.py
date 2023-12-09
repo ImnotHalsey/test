@@ -5,7 +5,7 @@ import pandas as pd
 
 
 def files_processor(downloaded_file,option, code= None):
-    pdf_path = f"pdf/{BankStatementProcessor.generate_random_name()}file.pdf" 
+    pdf_path = f"Documents/bot/test/pdf/{BankStatementProcessor.generate_random_name()}file.pdf"
     with open(pdf_path, 'wb') as f:
         f.write(downloaded_file)
         
