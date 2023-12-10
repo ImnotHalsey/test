@@ -156,6 +156,7 @@ class PDFProcessor:
       return
         
     def post_processed_data(self,user_input,data,total_summary,option):
+        print("Came to POST PROCESSED DATA")
         excel_path = f'pdf/{BankStatementProcessor.generate_random_name()}excel_file.xlsx'  
         data.to_excel(excel_path, index=False)
         with open(excel_path, 'rb') as file:

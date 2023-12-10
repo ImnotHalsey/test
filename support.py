@@ -5,13 +5,13 @@ import pandas as pd
 
 
 def files_processor(downloaded_file, option, code=None):
-    # Specify the directory for PDF files
-    pdf_directory = os.path.join(os.path.expanduser("~"), "Documents", "bot", "test", "pdf")
+    
+    pdf_directory = "/home/admin/Documents/bot/test/pdf"
     os.makedirs(pdf_directory, exist_ok=True)
-
-    # Generate a unique name for the PDF file
     pdf_filename = f'{BankStatementProcessor.generate_random_name()}_file.pdf'
     pdf_path = os.path.join(pdf_directory, pdf_filename)
+    print("PDF saved! In the path :: ", pdf_path)
+
 
     try:
         with open(pdf_path, 'wb') as f:
